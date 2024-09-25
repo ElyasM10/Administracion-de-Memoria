@@ -61,25 +61,25 @@ public class Simulador {
     public Simulador() {
     }
 
-    public List<Particion> asignarParticion(List<Particion> listaParticiones, List<Proceso> procesos, int tiempoActual, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
+    public List<Particion> asignarParticion(List<Particion> listaParticiones, List<Proceso> procesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
         Particion particionAsignada = null;
 
         switch (estrategiaActual) {
             case 1 -> {
                 System.out.println("Entrando a First Fit");
-                particionesFinal = asignador.firstFit(listaParticiones, procesos, tiempoActual, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
+                particionesFinal = asignador.firstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
             }
             case 2 -> {
                 System.out.println("Entrando a Best Fit");
-                particionAsignada = asignador.bestFit(listaParticiones, procesos, tiempoActual, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion);
+                particionesFinal = asignador.bestFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
             }
             case 3 -> {
                 System.out.println("Entrando a Next Fit");
-                particionAsignada = asignador.nextFit(listaParticiones, procesos, tiempoActual, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion);
+                particionesFinal = asignador.nextFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
             }
             case 4 -> {
                 System.out.println("Entrando a Worst Fit");
-                particionAsignada = asignador.worstFit(listaParticiones, procesos, tiempoActual, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion);
+                particionesFinal = asignador.worstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
             }
         }
 
@@ -89,7 +89,7 @@ public class Simulador {
 
     
 public int simular() {
-        int tiempoActual = 0;
+
 
         System.out.println("Entrando al simulador");
 
@@ -103,7 +103,7 @@ public int simular() {
 
 
       
-        particionesFinal = asignarParticion(listaParticiones, procesos, tiempoActual, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
+        particionesFinal = asignarParticion(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
 
         return resultado.getFragmentacion();
     }
@@ -154,22 +154,6 @@ public int simular() {
         particion.setEstado(false); // Marcar la partición como libre
         System.out.println("Partición liberada para el proceso: " + proceso.getNombre());
     }
-
-
-    /*
-        private void fusionarParticionesLibres() {
-        for (int i = 0; i < particiones.size() - 1; i++) {
-            Particion actual = particiones.get(i);
-            Particion siguiente = particiones.get(i + 1);
-
-            if (!actual.isOcupada() && !siguiente.isOcupada()) {
-                actual.settamanio(actual.gettamanio() + siguiente.gettamanio());
-                particiones.remove(i + 1);
-                i--; // Retroceder para verificar si se puede fusionar con la siguiente
-            }
-        }
-    }
-*/
 
 
     public void setEstrategiaActual(int estrategia) {

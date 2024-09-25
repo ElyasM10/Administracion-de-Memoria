@@ -77,9 +77,11 @@ public class ConsolaInterfaz {
             simulador = new Simulador(listaProcesos, tamanioMemoria, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, estrategiaAsignacion);
             
 
+
             // Ejecutar la simulación
-            int fragmentacionExterna = simulador.simular();
-            System.out.println("Fragmentación externa: " + fragmentacionExterna);
+            simulador.simular();
+         //   int fragmentacionExterna = simulador.simular();
+        //    System.out.println("Fragmentación externa: " + fragmentacionExterna);
             
         } catch (NumberFormatException ex) {
             System.out.println("Error en el formato de los números: " + ex.getMessage());
