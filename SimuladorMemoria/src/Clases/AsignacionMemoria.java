@@ -40,10 +40,11 @@ public class AsignacionMemoria {
     public List<Particion> firstFit(List<Particion> listaParticiones, List<Proceso> listaProcesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
         int fragmentacionExterna = 0;
         int tiempoActual = 0;
+        int indice = 0;
         List<Particion> particiones = new ArrayList<>();
 
         while (!listaProcesos.isEmpty()) {
-            Proceso ProcesoActual = listaProcesos.get(0);
+            Proceso ProcesoActual = listaProcesos.get(indice);
             System.out.println("El Proceso: " + ProcesoActual.getNombre() + " está esperando una partición, tamaño: " + ProcesoActual.getTamanio());
             System.out.println("Tiempo actual: " + tiempoActual);
 
@@ -86,8 +87,10 @@ public class AsignacionMemoria {
                         System.out.println(particionEncontrada);
 
                         particiones.add(particionEncontrada);
-                        listaParticiones.add(particionEncontrada);
+                        //listaParticiones.add(particionEncontrada);
+                        listaParticiones.add(listaParticiones.indexOf(particion), particionEncontrada);
                         listaParticiones.remove(particion);
+                    
 
                     } else if (particion.getTamanio() > ProcesoActual.getTamanio()) {
                         Particion particionEncontrada = new Particion(
@@ -101,7 +104,7 @@ public class AsignacionMemoria {
                         System.out.println(particionEncontrada);
 
                         particiones.add(particionEncontrada);
-                        listaParticiones.add(particionEncontrada);
+                        listaParticiones.add(listaParticiones.indexOf(particion) + 1, particionEncontrada);
                         Particion particionSobrante = new Particion(
                                 -1,
                                 -1,
@@ -109,12 +112,12 @@ public class AsignacionMemoria {
                                 true,
                                 -1
                         );
-                        listaParticiones.add(particionSobrante);
+                        listaParticiones.add(listaParticiones.indexOf(particion) + 2, particionSobrante);
 
                         listaParticiones.remove(particion);
                     }
 
-                    listaProcesos.remove(0);  // Eliminar el proceso una vez asignado
+                    listaProcesos.remove(indice);  // Eliminar el proceso una vez asignado
                 }
                 i++;
             }
@@ -123,9 +126,10 @@ public class AsignacionMemoria {
             for (Particion particion : listaParticiones) {
                 if (particion.getEstado()) {
                     fragmentacionExterna += particion.getTamanio();
+                    System.out.println("Fragmentación externa: " + fragmentacionExterna);
                 }
             }
-            System.out.println("Fragmentación externa: " + fragmentacionExterna);
+
 
             // Mostrar particiones después de la actualización
             for (Particion particion : listaParticiones) {

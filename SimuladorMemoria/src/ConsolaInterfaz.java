@@ -23,6 +23,15 @@ public class ConsolaInterfaz {
 
         System.out.print("Nombre del archivo: ");
         String nombreArchivo = scanner.nextLine();
+
+        System.out.print("Tamaño de la memoria: ");
+        int tamanioMemoria = Integer.parseInt(scanner.nextLine());
+        System.out.print("Tiempo de selección: ");
+        int tiempoSeleccion = Integer.parseInt(scanner.nextLine());
+        System.out.print("Tiempo de carga promedio: ");
+        int tiempoCargaPromedio = Integer.parseInt(scanner.nextLine());
+        System.out.print("Tiempo de liberación: ");
+        int tiempoLiberacion = Integer.parseInt(scanner.nextLine());
         
         System.out.println("Política de asignación:");
         System.out.println("1 - First Fit");
@@ -63,15 +72,7 @@ public class ConsolaInterfaz {
                 break;
         }
 
-        try {
-            System.out.print("Tamaño de la memoria: ");
-            int tamanioMemoria = Integer.parseInt(scanner.nextLine());
-            System.out.print("Tiempo de selección: ");
-            int tiempoSeleccion = Integer.parseInt(scanner.nextLine());
-            System.out.print("Tiempo de carga promedio: ");
-            int tiempoCargaPromedio = Integer.parseInt(scanner.nextLine());
-            System.out.print("Tiempo de liberación: ");
-            int tiempoLiberacion = Integer.parseInt(scanner.nextLine());
+
 
             // Crear el simulador con la estrategia seleccionada
             simulador = new Simulador(listaProcesos, tamanioMemoria, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, estrategiaAsignacion);
@@ -83,9 +84,9 @@ public class ConsolaInterfaz {
          //   int fragmentacionExterna = simulador.simular();
         //    System.out.println("Fragmentación externa: " + fragmentacionExterna);
             
-        } catch (NumberFormatException ex) {
-            System.out.println("Error en el formato de los números: " + ex.getMessage());
-        }
+
+
+
     }
 
     private static List<Proceso> cargarProcesosDesdeArchivo(String nombreArchivo) {
