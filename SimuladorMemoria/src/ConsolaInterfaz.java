@@ -77,17 +77,18 @@ public class ConsolaInterfaz {
             // Crear el simulador con la estrategia seleccionada
             simulador = new Simulador(listaProcesos, tamanioMemoria, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, estrategiaAsignacion);
             
-
+            List<Particion> particionesAgraficar = new ArrayList<>();
 
             // Ejecutar la simulación
-            simulador.simular();
+            particionesAgraficar = simulador.simular();
+
+       //     mostrarResultados(particionesAgraficar);
+
          //   int fragmentacionExterna = simulador.simular();
         //    System.out.println("Fragmentación externa: " + fragmentacionExterna);
-            
-
-
-
+        
     }
+
 
     private static List<Proceso> cargarProcesosDesdeArchivo(String nombreArchivo) {
         List<Proceso> procesos = new ArrayList<>();

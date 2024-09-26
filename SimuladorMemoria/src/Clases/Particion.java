@@ -5,6 +5,7 @@ public class Particion {
     private int tiempoInicio;
     private int tiempoFinalizacion;
     private int tamanio;
+    private int graficarParticion;
     private boolean estado;
     private Proceso proceso;
     //  private EstrategiaAsignacion estrategiaActual;
@@ -18,15 +19,25 @@ public class Particion {
     }
   */
 
-    public Particion(int id, int tiempoInicio, int tamanio, boolean estado, int tiempoFinalizacion) {
+    public Particion(int id, int tiempoInicio, int tamanio, boolean estado, int tiempoFinalizacion,int graficarParticion) {
         this.id = id;
         this.tiempoInicio = tiempoInicio;
         this.tamanio = tamanio;
-        this.estado = estado; // Asigna el estado recibido como parámetro
+        this.estado = estado; 
         this.tiempoFinalizacion = tiempoFinalizacion;
+        this.graficarParticion = graficarParticion;
     }
 
 
+    public void setGraficarParticion(int graficarParticion){
+        this.graficarParticion = graficarParticion;
+    }
+
+
+   public int  getGraficarParticion(){
+        return graficarParticion;
+    }
+    
     public void setId(int id){
         this.id = id;
     }

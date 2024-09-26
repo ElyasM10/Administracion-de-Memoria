@@ -2,13 +2,13 @@ package Clases;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class AsignacionMemoria {
 
 
-    
-    private int ultimaParticionindice = 0; // indice de la ultima particion asignada
+
     public int  tamanoRestante = 0;
 
 
@@ -22,7 +22,7 @@ public class AsignacionMemoria {
                 int tamanioUnificado = particionActual.getTamanio() + particionSiguiente.getTamanio();
 
                 // Crear una nueva partición unificada
-                Particion nuevaParticion = new Particion(-1, -1, tamanioUnificado, true, -1);
+                Particion nuevaParticion = new Particion(-1, -1, tamanioUnificado, true, -1,0);
                 listaParticiones.set(i, nuevaParticion);  // Reemplazar la partición actual por la unificada
 
                 // Eliminar la partición siguiente
@@ -76,12 +76,27 @@ public class AsignacionMemoria {
                     int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
 
                     if (particion.getTamanio() == ProcesoActual.getTamanio()) {
+
+ 
+                        int graficarParticion = 0;
+                        for (Particion part : listaParticiones) {
+                            if (part.getEstado()) {
+                                graficarParticion += part.getTamanio();
+                            }
+                            if (part == particion) {
+                                // Rompe el bucle al llegar a la partición actual
+                                break;
+                            }
+                        }
+                                
+
                         Particion particionEncontrada = new Particion(
                                 i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
-                                tiempoFinalizacion
+                                tiempoFinalizacion,
+                                graficarParticion
                         );
                         System.out.println("El Proceso " + ProcesoActual.getNombre() + " encontró partición");
                         System.out.println(particionEncontrada);
@@ -93,13 +108,27 @@ public class AsignacionMemoria {
                     
 
                     } else if (particion.getTamanio() > ProcesoActual.getTamanio()) {
+
+ 
+                        int graficarParticion = 0;
+                        for (Particion part : listaParticiones) {
+                            if (part.getEstado()) {
+                                graficarParticion += part.getTamanio();
+                            }
+                            if (part == particion) {
+                                // Rompe el bucle al llegar a la partición actual
+                                break;
+                            }
+                        }  
                         Particion particionEncontrada = new Particion(
                                 i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
-                                tiempoFinalizacion
+                                tiempoFinalizacion,
+                                graficarParticion
                         );
+
                         System.out.println("El Proceso " + ProcesoActual.getNombre() + " encontró partición");
                         System.out.println(particionEncontrada);
 
@@ -110,7 +139,8 @@ public class AsignacionMemoria {
                                 -1,
                                 particion.getTamanio() - ProcesoActual.getTamanio(),
                                 true,
-                                -1
+                                -1,
+                                0
                         );
                         listaParticiones.add(listaParticiones.indexOf(particion) + 2, particionSobrante);
 
@@ -152,7 +182,7 @@ public class AsignacionMemoria {
         System.out.println("fragmentación externa TOTAL: " + fragmentacionExterna);
         return particiones;
     }
- 
+
 
     public  List<Particion> bestFit(List<Particion> listaParticiones, List<Proceso> listaProcesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
 
@@ -209,6 +239,18 @@ public class AsignacionMemoria {
                     // Si la partición es exactamente del tamaño del Proceso
                     if (particion.getTamanio() == ProcesoActual.getTamanio()) {
 
+
+                        int graficarParticion = 0;
+                        for (Particion part : listaParticiones) {
+                            if (part.getEstado()) {
+                                graficarParticion += part.getTamanio();
+                            }
+                            if (part == particion) {
+                                // Rompe el bucle al llegar a la partición actual
+                                break;
+                            }
+                        }  
+
                         int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
                         int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
                         Particion particionEncontrada = new Particion(
@@ -216,7 +258,8 @@ public class AsignacionMemoria {
                             tiempoInicio,
                             ProcesoActual.getTamanio(),
                             false,
-                            tiempoFinalizacion
+                            tiempoFinalizacion,
+                            graficarParticion 
                     );
                         System.out.println("El Proceso " + ProcesoActual.getNombre() + " encontró partición: " + particionEncontrada);
 
@@ -228,12 +271,27 @@ public class AsignacionMemoria {
                     } else if (particion.getTamanio() > ProcesoActual.getTamanio()) {
                         int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
                         int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
+
+
+                    
+                        int graficarParticion = 0;
+                        for (Particion part : listaParticiones) {
+                            if (part.getEstado()) {
+                                graficarParticion += part.getTamanio();
+                            }
+                            if (part == particion) {
+                                // Rompe el bucle al llegar a la partición actual
+                                break;
+                            }
+                        }  
+
                         Particion particionAsignada =new Particion(
                             i,
                             tiempoInicio,
                             ProcesoActual.getTamanio(),
                             false,
-                            tiempoFinalizacion
+                            tiempoFinalizacion,
+                            graficarParticion
                     );
                         listaParticiones.add(particionAsignada);
                         particiones.add(particionAsignada);
@@ -244,7 +302,8 @@ public class AsignacionMemoria {
                                 -1,
                                 particion.getTamanio() - ProcesoActual.getTamanio(),
                                 true,
-                                -1
+                                -1,
+                                0
                         );
                         listaParticiones.add(particionLibre);
                         listaParticiones.remove(particion);
@@ -314,18 +373,29 @@ public class AsignacionMemoria {
                         carga = false;
 
                         if (particion.getTamanio() == ProcesoActual.getTamanio()) {
-                      
-                            
-                           
+            
                              int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
                              int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
+
+                            
+                                int graficarParticion = 0;
+                                for (Particion part : listaParticiones) {
+                                    if (part.getEstado()) {
+                                        graficarParticion += part.getTamanio();
+                                    }
+                                    if (part == particion) {
+                                        // Rompe el bucle al llegar a la partición actual
+                                        break;
+                                    }
+                                }  
 
                              Particion particionEncontrada = new Particion(
                                 i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
-                                tiempoFinalizacion
+                                tiempoFinalizacion,
+                                graficarParticion
                         );
                             System.out.println("El Proceso " + ProcesoActual.getNombre() + " encontró partición");
                             particiones.add(particionEncontrada);
@@ -338,13 +408,24 @@ public class AsignacionMemoria {
                             int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
                             int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
 
+                            int graficarParticion = 0;
+                            for (Particion part : listaParticiones) {
+                                if (part.getEstado()) {
+                                    graficarParticion += part.getTamanio();
+                                }
+                                if (part == particion) {
+                                    // Rompe el bucle al llegar a la partición actual
+                                    break;
+                                }
+                            }  
 
                             Particion particionEncontrada = new Particion(
                                 i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
-                                tiempoFinalizacion
+                                tiempoFinalizacion,
+                                graficarParticion
                         );
                             listaParticiones.add(listaParticiones.indexOf(particion) + 1, particionEncontrada);
                             particiones.add(particionEncontrada);
@@ -354,7 +435,8 @@ public class AsignacionMemoria {
                                     -1,
                                     particion.getTamanio() - ProcesoActual.getTamanio(),
                                     true,
-                                    -1
+                                    -1,
+                                     0 
                             );
                             listaParticiones.add(listaParticiones.indexOf(particion) + 2, particionLibre);
 
@@ -402,7 +484,7 @@ public class AsignacionMemoria {
 
     public List<Particion> worstFit(List<Particion> listaParticiones, List<Proceso> listaProcesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
       
-        /* 
+        
         List<Particion> particiones = new ArrayList<>();
         int index = 0;
         int tiempoActual = 0;
@@ -441,38 +523,63 @@ public class AsignacionMemoria {
 
                     
                     // Encontramos la partición en la lista original
-                    Particion particion = listaParticiones.stream()
-                            .filter(p -> p.getId() == listaParticionesLibres.get(i).getId())
-                            .findFirst()
-                            .orElse(null);
-                
-               //Error
-    
+                        Particion particion = listaParticiones.stream()
+                        .filter(p -> p.getId() == listaParticionesLibres.get(index).getId())
+                        .findFirst()
+                        .orElse(null);
+                        
 
                             int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
                             int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
 
                         if (particion.getTamanio() == ProcesoActual.getTamanio()) {
+
+
+                            int graficarParticion = 0;
+                            for (Particion part : listaParticiones) {
+                                if (part.getEstado()) {
+                                    graficarParticion += part.getTamanio();
+                                }
+                                if (part == particion) {
+                                    // Rompe el bucle al llegar a la partición actual
+                                    break;
+                                }
+                            }  
                             
                             Particion particionEncontrada = new Particion(
                                i,
                                tiempoInicio,
                                ProcesoActual.getTamanio(),
                                false,
-                               tiempoFinalizacion
+                               tiempoFinalizacion,
+                               graficarParticion
                        );
+
                             particiones.add(particionEncontrada);
                             listaParticiones.add(listaParticiones.indexOf(particion), particionEncontrada);
                             listaParticiones.remove(particion);
                             listaProcesos.remove(index);
 
                         } else if (particion.getTamanio() > ProcesoActual.getTamanio()) {
+
+                            int graficarParticion = 0;
+                            for (Particion part : listaParticiones) {
+                                if (part.getEstado()) {
+                                    graficarParticion += part.getTamanio();
+                                }
+                                if (part == particion) {
+                                    // Rompe el bucle al llegar a la partición actual
+                                    break;
+                                }
+                            }  
+
                             Particion particionEncontrada = new Particion(
                                i,
                                tiempoInicio,
                                ProcesoActual.getTamanio(),
                                false,
-                               tiempoFinalizacion
+                               tiempoFinalizacion,
+                               graficarParticion
                        );
                             particiones.add(particionEncontrada);
                             listaParticiones.add(listaParticiones.indexOf(particion) + 1, particionEncontrada);
@@ -482,7 +589,8 @@ public class AsignacionMemoria {
                                 -1,
                                 particion.getTamanio() - ProcesoActual.getTamanio(),
                                 true,
-                                -1
+                                -1,
+                                0
                         );
                             listaParticiones.add(listaParticiones.indexOf(particion) + 2, particionLibre);
                             listaParticiones.remove(particion);
@@ -517,8 +625,8 @@ public class AsignacionMemoria {
               System.out.println("Fragmentación externa TOTAL: " + fragmentacionExterna);
     
             return particiones;
-       */
-        return null; 
+       
+    
         }
     }
 

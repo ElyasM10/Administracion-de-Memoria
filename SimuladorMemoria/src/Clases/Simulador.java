@@ -88,14 +88,14 @@ public class Simulador {
    
 
     
-public int simular() {
+public List<Particion> simular() {
 
 
         System.out.println("Entrando al simulador");
 
-        imprimirDatosSimulador();
+  //      imprimirDatosSimulador();
 
-        Particion particionInicial = new Particion(0, -1, tamanioMemoria, true, -1);
+        Particion particionInicial = new Particion(0, -1, tamanioMemoria, true, -1,0);
         listaParticiones.add(particionInicial);
 
         Resultado resultado = new Resultado();
@@ -105,7 +105,9 @@ public int simular() {
       
         particionesFinal = asignarParticion(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
 
-        return resultado.getFragmentacion();
+      //  return resultado.getFragmentacion();
+          return particionesFinal;
+
     }
  
     
