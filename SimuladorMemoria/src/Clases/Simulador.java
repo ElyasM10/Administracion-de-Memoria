@@ -3,6 +3,7 @@ package Clases;
 
 import java.util.ArrayList;
 import java.util.List;
+import Clases.Politicas.*;
 
 
 public class Simulador {
@@ -66,20 +67,27 @@ public class Simulador {
 
         switch (estrategiaActual) {
             case 1 -> {
-                System.out.println("Entrando a First Fit");
-                particionesFinal = asignador.firstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
+                System.out.println("Simulador: First Fit");
+                PoliticaFirstFit ff = new PoliticaFirstFit();
+             //     particionesFinal = asignador.firstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
+                particionesFinal = ff.firstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
             }
             case 2 -> {
-                System.out.println("Entrando a Best Fit");
-                particionesFinal = asignador.bestFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
+                System.out.println("Simulador: Best Fit");
+                PoliticaBestFit bf = new PoliticaBestFit();
+             //   particionesFinal = asignador.bestFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
+                particionesFinal = bf.bestFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
             }
             case 3 -> {
-                System.out.println("Entrando a Next Fit");
-                particionesFinal = asignador.nextFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
+                System.out.println("Simulador: Next Fit");
+                PoliticaNextFit nf = new PoliticaNextFit();
+                //particionesFinal = asignador.nextFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
+                particionesFinal = nf.nextFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
             }
             case 4 -> {
-                System.out.println("Entrando a Worst Fit");
-                particionesFinal = asignador.worstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
+                System.out.println("Simulador: Worst Fit");
+                PoliticaWorstFit wf = new PoliticaWorstFit();
+                particionesFinal = wf.worstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
             }
         }
 
