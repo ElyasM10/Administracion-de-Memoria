@@ -73,11 +73,12 @@ public class PoliticaWorstFit {
 
             listaParticiones = unificarParticiones(listaParticiones);
 
-            // Filtrar particiones libres
-            List<Particion> listaParticionesLibres = listaParticiones.stream()
-                    .filter(Particion::getEstado)
-                    .sorted(Comparator.comparingInt(Particion::getTamanio).reversed())
-                    .collect(Collectors.toList());
+            List<Particion> listaParticionesLibres = new ArrayList<>();
+            for (Particion particion : listaParticiones) {
+                if (particion.getEstado()) {
+                    listaParticionesLibres.add(particion);
+                }
+            }
 
             listaParticionesLibres.forEach(p -> System.out.println("Particiones libres ordenadas de mayor a menor: [" + p + "]"));
 
@@ -86,22 +87,12 @@ public class PoliticaWorstFit {
 
             // Buscar la primera partición libre que pueda abarcar el tamaño necesario
             while (carga && i < listaParticionesLibres.size()) {
-                if (listaParticionesLibres.get(i).getTamanio() >= ProcesoActual.getTamanio()) {
-                    carga = false;
+                    if (particion.getTamanio() >= ProcesoActual.getTamanio()) {
 
 
-                    // Encontramos la partición en la lista original
-                    Particion particion = listaParticiones.stream()
-                            .filter(p -> p.getId() == listaParticionesLibres.get(index).getId())
-                            .findFirst()
-                            .orElse(null);
 
-
-                    int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
-                    int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
-
-                    if (particion.getTamanio() == ProcesoActual.getTamanio()) {
-
+                        int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
+                        int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
 
                         int graficarParticion = 0;
                         /*
@@ -129,9 +120,11 @@ public class PoliticaWorstFit {
                         listaParticiones.remove(particion);
                         listaProcesos.remove(index);
 
-                    } else if (particion.getTamanio() > ProcesoActual.getTamanio()) {
+                    } else {
 
                         int graficarParticion = 0;
+                        int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
+                        int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
                         /*
                         for (Particion part : listaParticiones) {
                             if (part.getEstado()) {
@@ -145,7 +138,7 @@ public class PoliticaWorstFit {
                          */
                         graficarParticion = calcularGraficoParticion(listaParticiones,particion,graficarParticion);
 
-
+//Falta el if del medio
                         Particion particionEncontrada = new Particion(
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),

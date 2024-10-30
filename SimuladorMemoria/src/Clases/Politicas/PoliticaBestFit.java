@@ -54,16 +54,14 @@ public class PoliticaBestFit {
 
     public List<Particion> bestFit(List<Particion> listaParticiones, List<Proceso> listaProcesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
 
-        System.out.println("Estoy en la politica bestFit ");
-
         List<Particion> particiones = new ArrayList<>();
         int indice = 0;
         int tiempoActual = 0;
         int fragmentacionExterna = 0;
 
-        while (listaProcesos.size() > 0) {
+        while (!listaProcesos.isEmpty())  {
             Proceso ProcesoActual = listaProcesos.get(indice);
-            System.out.println("Proceso: " + ProcesoActual.getNombre() + " esperando partición");
+            System.out.println("Proceso: " + ProcesoActual.getNombre() + " esperando partición, Tamanio: "+ProcesoActual.getTamanio());
             System.out.println("Tiempo actual: " + tiempoActual);
 
             // Verificar si alguna particion debe liberarse en el tiempo actual
@@ -77,7 +75,7 @@ public class PoliticaBestFit {
             listaParticiones = unificarParticiones(listaParticiones);
 
             for (Particion particion : listaParticiones) {
-                System.out.println("Particiones disponibles: [" + particion + "]");
+                System.out.println("Particiones Disponibles: [" + particion + "]");
             }
 
             // Crear lista filtrada de particiones libres
@@ -89,7 +87,7 @@ public class PoliticaBestFit {
             }
 
             // Ordenar la lista de particiones libres por tamaño ascendente
-            Collections.sort(listaParticionesLibres, Comparator.comparingInt(Particion::getTamanio));
+            listaParticionesLibres.sort(Comparator.comparingInt(Particion::getTamanio));
 
             // Buscar partición adecuada (Best Fit)
             boolean carga = true;
@@ -106,22 +104,9 @@ public class PoliticaBestFit {
                             .findFirst()
                             .orElse(null);
 
-                    // Si la partición es exactamente del tamaño del Proceso
-                    if (particion.getTamanio() == ProcesoActual.getTamanio()) {
 
 
                         int graficarParticion = 0;
-                        /*
-                        for (Particion part : listaParticiones) {
-                            if (part.getEstado()) {
-                                graficarParticion += part.getTamanio();
-                            }
-                            if (part == particion) {
-                                // Rompe el bucle al llegar a la partición actual
-                                break;
-                            }
-                        }
-                         */
                         graficarParticion = calcularGraficoParticion(listaParticiones,particion,graficarParticion);
 
                         int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
@@ -136,41 +121,13 @@ public class PoliticaBestFit {
                         System.out.println("El Proceso " + ProcesoActual.getNombre() + " encontró partición: " + particionEncontrada);
 
                         particiones.add( particionEncontrada);
-                        listaParticiones.add(particionEncontrada);
+                        listaParticiones.add(listaParticiones.indexOf(particion), particionEncontrada);
                         listaParticiones.remove(particion);
-                        listaProcesos.remove(indice);
 
-                    } else if (particion.getTamanio() > ProcesoActual.getTamanio()) {
-                        int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
-                        int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
+                        if (particion.getTamanio() > ProcesoActual.getTamanio()) {
 
-
-
-                        int graficarParticion = 0;
-                        /*
-                        for (Particion part : listaParticiones) {
-                            if (part.getEstado()) {
-                                graficarParticion += part.getTamanio();
-                            }
-                            if (part == particion) {
-                                // Rompe el bucle al llegar a la partición actual
-                                break;
-                            }
-                        }
-     */
                         graficarParticion = calcularGraficoParticion(listaParticiones,particion,graficarParticion);
 
-                        Particion particionAsignada =new Particion(
-                                tiempoInicio,
-                                ProcesoActual.getTamanio(),
-                                false,
-                                tiempoFinalizacion,
-                                graficarParticion
-                        );
-                        listaParticiones.add(particionAsignada);
-                        particiones.add(particionAsignada);
-
-                        // Partición sobrante
                         Particion particionLibre = new Particion(
                                 -1,
                                 particion.getTamanio() - ProcesoActual.getTamanio(),
@@ -178,16 +135,15 @@ public class PoliticaBestFit {
                                 -1,
                                 0
                         );
-                        listaParticiones.add(particionLibre);
-                        listaParticiones.remove(particion);
+                        listaParticiones.add(listaParticiones.indexOf(particionEncontrada) + 1, particionLibre);
                         System.out.println("El Proceso " + ProcesoActual.getNombre() + " encontró partición.");
-                        listaProcesos.remove(indice);
                     }
+                    listaProcesos.remove(indice);
                 }
                 i++;
             }
 
-            // Calcular fragmentación externa
+
             for (Particion particion : listaParticiones) {
                 if (particion.getEstado() && !listaProcesos.isEmpty()) {
                     fragmentacionExterna += particion.getTamanio();
@@ -197,7 +153,7 @@ public class PoliticaBestFit {
 
             // Incrementar el tiempo actual
             tiempoActual++;
-
+            System.out.println("Longitud de la lista de Procesos: " + listaProcesos.size());
             System.out.println("------------------------------");
             // Simular retardo de 1 segundo
             try {
