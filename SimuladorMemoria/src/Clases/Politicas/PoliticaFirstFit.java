@@ -21,7 +21,7 @@ public class PoliticaFirstFit {
                 int tamanioUnificado = particionActual.getTamanio() + particionSiguiente.getTamanio();
 
                 // Crear una nueva partición unificada
-                Particion nuevaParticion = new Particion(-1, -1, tamanioUnificado, true, -1,0);
+                Particion nuevaParticion = new Particion(-1, tamanioUnificado, true, -1,0);
                 listaParticiones.set(i, nuevaParticion);  // Reemplazar la partición actual por la unificada
 
                 // Eliminar la partición siguiente
@@ -75,7 +75,7 @@ public class PoliticaFirstFit {
                 System.out.println("Particiones disponibles: " + particion);
             }
 
-            // Buscar primera partición que pueda albergar el proceso
+            // Buscar la primera particion que pueda contener a el proceso
             boolean carga = true;
             int i = 0;
 
@@ -105,7 +105,6 @@ public class PoliticaFirstFit {
                                 
 
                         Particion particionEncontrada = new Particion(
-                                i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
@@ -139,7 +138,6 @@ public class PoliticaFirstFit {
                         graficarParticion = calcularGraficoParticion(listaParticiones,particion,graficarParticion);
 
                         Particion particionEncontrada = new Particion(
-                                i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
@@ -153,7 +151,6 @@ public class PoliticaFirstFit {
                         particiones.add(particionEncontrada);
                         listaParticiones.add(listaParticiones.indexOf(particion) + 1, particionEncontrada);
                         Particion particionSobrante = new Particion(
-                                -1,
                                 -1,
                                 particion.getTamanio() - ProcesoActual.getTamanio(),
                                 true,
@@ -169,17 +166,18 @@ public class PoliticaFirstFit {
                 }
                 i++;
             }
+       //  System.out.println("Tamanio de la lista de procesos antes de Fe: "+listaProcesos.size());
+
 
             // Calcular fragmentación externa
             for (Particion particion : listaParticiones) {
-                if (particion.getEstado()) {
+                if (particion.getEstado() && !listaProcesos.isEmpty()) {
                     fragmentacionExterna += particion.getTamanio();
                     System.out.println("Fragmentación externa: " + fragmentacionExterna);
                 }
             }
 
 
-            // Mostrar particiones después de la actualización
             for (Particion particion : listaParticiones) {
                 System.out.println("Particiones disponibles después de actualizar: [" + particion + "]");
             }

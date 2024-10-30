@@ -63,19 +63,16 @@ public class Simulador {
     }
 
     public List<Particion> asignarParticion(List<Particion> listaParticiones, List<Proceso> procesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
-        Particion particionAsignada = null;
-
         switch (estrategiaActual) {
             case 1 -> {
                 System.out.println("Simulador: First Fit");
                 PoliticaFirstFit ff = new PoliticaFirstFit();
-             //     particionesFinal = asignador.firstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
                 particionesFinal = ff.firstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
             }
             case 2 -> {
                 System.out.println("Simulador: Best Fit");
                 PoliticaBestFit bf = new PoliticaBestFit();
-             //   particionesFinal = asignador.bestFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
+
                 particionesFinal = bf.bestFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
             }
             case 3 -> {
@@ -103,7 +100,7 @@ public List<Particion> simular() {
 
   //      imprimirDatosSimulador();
 
-        Particion particionInicial = new Particion(0, -1, tamanioMemoria, true, -1,0);
+        Particion particionInicial = new Particion(-1, tamanioMemoria, true, -1,0);
         listaParticiones.add(particionInicial);
 
         Resultado resultado = new Resultado();

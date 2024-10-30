@@ -8,6 +8,7 @@ public class Particion {
     private int graficarParticion;
     private boolean estado;
     private Proceso proceso;
+    private static int ultimoId = 0;
     //  private EstrategiaAsignacion estrategiaActual;
 
 /*
@@ -18,9 +19,13 @@ public class Particion {
         WORST_FIT
     }
   */
+public static int generarId() {
+    ultimoId++;
+    return ultimoId;
+}
 
-    public Particion(int id, int tiempoInicio, int tamanio, boolean estado, int tiempoFinalizacion,int graficarParticion) {
-        this.id = id;
+    public Particion(int tiempoInicio, int tamanio, boolean estado, int tiempoFinalizacion,int graficarParticion) {
+        this.id = generarId();
         this.tiempoInicio = tiempoInicio;
         this.tamanio = tamanio;
         this.estado = estado; 

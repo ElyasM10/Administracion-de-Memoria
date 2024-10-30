@@ -22,7 +22,7 @@ public class AsignacionMemoria {
                 int tamanioUnificado = particionActual.getTamanio() + particionSiguiente.getTamanio();
 
                 // Crear una nueva partición unificada
-                Particion nuevaParticion = new Particion(-1, -1, tamanioUnificado, true, -1,0);
+                Particion nuevaParticion = new Particion(-1,  tamanioUnificado, true, -1,0);
                 listaParticiones.set(i, nuevaParticion);  // Reemplazar la partición actual por la unificada
 
                 // Eliminar la partición siguiente
@@ -91,7 +91,6 @@ public class AsignacionMemoria {
                                 
 
                         Particion particionEncontrada = new Particion(
-                                i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
@@ -121,7 +120,6 @@ public class AsignacionMemoria {
                             }
                         }  
                         Particion particionEncontrada = new Particion(
-                                i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
@@ -135,7 +133,6 @@ public class AsignacionMemoria {
                         particiones.add(particionEncontrada);
                         listaParticiones.add(listaParticiones.indexOf(particion) + 1, particionEncontrada);
                         Particion particionSobrante = new Particion(
-                                -1,
                                 -1,
                                 particion.getTamanio() - ProcesoActual.getTamanio(),
                                 true,
@@ -254,7 +251,6 @@ public class AsignacionMemoria {
                         int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
                         int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
                         Particion particionEncontrada = new Particion(
-                            i,
                             tiempoInicio,
                             ProcesoActual.getTamanio(),
                             false,
@@ -286,7 +282,6 @@ public class AsignacionMemoria {
                         }  
 
                         Particion particionAsignada =new Particion(
-                            i,
                             tiempoInicio,
                             ProcesoActual.getTamanio(),
                             false,
@@ -298,7 +293,6 @@ public class AsignacionMemoria {
 
                         // Partición sobrante
                         Particion particionLibre = new Particion(
-                                -1,
                                 -1,
                                 particion.getTamanio() - ProcesoActual.getTamanio(),
                                 true,
@@ -390,7 +384,6 @@ public class AsignacionMemoria {
                                 }  
 
                              Particion particionEncontrada = new Particion(
-                                i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
@@ -420,7 +413,6 @@ public class AsignacionMemoria {
                             }  
 
                             Particion particionEncontrada = new Particion(
-                                i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
@@ -431,7 +423,6 @@ public class AsignacionMemoria {
                             particiones.add(particionEncontrada);
 
                                 Particion particionLibre = new Particion(
-                                    -1,
                                     -1,
                                     particion.getTamanio() - ProcesoActual.getTamanio(),
                                     true,
@@ -547,7 +538,6 @@ public class AsignacionMemoria {
                             }  
                             
                             Particion particionEncontrada = new Particion(
-                               i,
                                tiempoInicio,
                                ProcesoActual.getTamanio(),
                                false,
@@ -574,7 +564,6 @@ public class AsignacionMemoria {
                             }  
 
                             Particion particionEncontrada = new Particion(
-                               i,
                                tiempoInicio,
                                ProcesoActual.getTamanio(),
                                false,
@@ -585,7 +574,6 @@ public class AsignacionMemoria {
                             listaParticiones.add(listaParticiones.indexOf(particion) + 1, particionEncontrada);
 
                             Particion particionLibre = new Particion(
-                                -1,
                                 -1,
                                 particion.getTamanio() - ProcesoActual.getTamanio(),
                                 true,

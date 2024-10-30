@@ -23,7 +23,7 @@ public class PoliticaWorstFit {
                 int tamanioUnificado = particionActual.getTamanio() + particionSiguiente.getTamanio();
 
                 // Crear una nueva partición unificada
-                Particion nuevaParticion = new Particion(-1, -1, tamanioUnificado, true, -1,0);
+                Particion nuevaParticion = new Particion(-1,  tamanioUnificado, true, -1,0);
                 listaParticiones.set(i, nuevaParticion);  // Reemplazar la partición actual por la unificada
 
                 // Eliminar la partición siguiente
@@ -117,7 +117,6 @@ public class PoliticaWorstFit {
                         graficarParticion = calcularGraficoParticion(listaParticiones,particion,graficarParticion);
 
                         Particion particionEncontrada = new Particion(
-                                i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
@@ -148,7 +147,6 @@ public class PoliticaWorstFit {
 
 
                         Particion particionEncontrada = new Particion(
-                                i,
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
@@ -159,7 +157,6 @@ public class PoliticaWorstFit {
                         listaParticiones.add(listaParticiones.indexOf(particion) + 1, particionEncontrada);
 
                         Particion particionLibre = new Particion(
-                                -1,
                                 -1,
                                 particion.getTamanio() - ProcesoActual.getTamanio(),
                                 true,
