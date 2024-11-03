@@ -9,6 +9,8 @@ public class Particion {
     private boolean estado;
     private Proceso proceso;
     private static int ultimoId = 0;
+    private int idTarea;
+
     //  private EstrategiaAsignacion estrategiaActual;
 
 /*
@@ -24,15 +26,23 @@ public static int generarId() {
     return ultimoId;
 }
 
-    public Particion(int tiempoInicio, int tamanio, boolean estado, int tiempoFinalizacion,int graficarParticion) {
+    public Particion(int tiempoInicio, int tamanio, boolean estado, int tiempoFinalizacion,int graficarParticion,int idTarea) {
         this.id = generarId();
         this.tiempoInicio = tiempoInicio;
         this.tamanio = tamanio;
         this.estado = estado; 
         this.tiempoFinalizacion = tiempoFinalizacion;
         this.graficarParticion = graficarParticion;
+        this.idTarea = idTarea;
     }
 
+    public int getIdTarea() {
+        return idTarea;
+    }
+
+    public void setIdTarea(int idTarea) {
+        this.idTarea = idTarea;
+    }
 
     public void setGraficarParticion(int graficarParticion){
         this.graficarParticion = graficarParticion;
@@ -102,6 +112,7 @@ public static int generarId() {
                 ", tamanio=" + tamanio +
                 ", estado=" + estado +
                 ", tiempoFinalizacion="+tiempoFinalizacion+
+                ",idTarea="+idTarea+
                 '}';
     }
 }

@@ -71,12 +71,9 @@ public class ConsolaInterfaz {
                 estrategiaAsignacion = WORST_FIT;
                 break;
         }
-
-
-
             // Crear el simulador con la estrategia seleccionada
             simulador = new Simulador(listaProcesos, tamanioMemoria, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, estrategiaAsignacion);
-            
+
             List<Particion> particionesAgraficar = new ArrayList<>();
 
             // Ejecutar la simulación

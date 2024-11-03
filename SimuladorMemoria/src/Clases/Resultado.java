@@ -6,6 +6,7 @@ public class Resultado {
 
     private  int fragmentacion;
     private List<Particion> listaDeParticiones;
+    private int longitudTrabajo;
 
 
     public Resultado() {
@@ -17,6 +18,7 @@ public class Resultado {
         return "Resultado{" +
                 "Particiones: "+listaDeParticiones+
                 ", fragmentacion=" + fragmentacion +
+                ",longitud: "+longitudTrabajo+
                 '}';
     }
 
@@ -36,6 +38,15 @@ public class Resultado {
     public void setlistaDeParticiones(List<Particion> listaDeParticiones) {
         this. listaDeParticiones = listaDeParticiones;
     }
+
+    public int getLongitudTrabajo() {
+        return longitudTrabajo;
+    }
+
+    public void setLongitudTrabajo(int longitudTrabajo) {
+        this.longitudTrabajo = longitudTrabajo;
+    }
+
 
 
 

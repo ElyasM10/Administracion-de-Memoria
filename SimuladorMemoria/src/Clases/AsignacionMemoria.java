@@ -4,7 +4,7 @@ package Clases;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+/*
 public class AsignacionMemoria {
 
 
@@ -22,7 +22,7 @@ public class AsignacionMemoria {
                 int tamanioUnificado = particionActual.getTamanio() + particionSiguiente.getTamanio();
 
                 // Crear una nueva partición unificada
-                Particion nuevaParticion = new Particion(-1,  tamanioUnificado, true, -1,0);
+                Particion nuevaParticion = new Particion(-1,  tamanioUnificado, true, -1,0,-1);
                 listaParticiones.set(i, nuevaParticion);  // Reemplazar la partición actual por la unificada
 
                 // Eliminar la partición siguiente
@@ -619,7 +619,7 @@ public class AsignacionMemoria {
     }
 
 
-    /* 
+
     // Obtener el objeto con el mayor tiempoFinalizacion
     Particion objetoMayorTiempoFinalizacion = Collections.max(listaParticiones, (p1, p2) -> Integer.compare(p1.getTiempoFinalizacion(), p2.getTiempoFinalizacion()));
 

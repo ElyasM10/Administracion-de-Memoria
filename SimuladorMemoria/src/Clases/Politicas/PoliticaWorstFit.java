@@ -6,6 +6,7 @@ import Clases.Resultado;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PoliticaWorstFit {
 
@@ -22,7 +23,7 @@ public class PoliticaWorstFit {
                 int tamanioUnificado = particionActual.getTamanio() + particionSiguiente.getTamanio();
 
                 // Crear una nueva partición unificada
-                Particion nuevaParticion = new Particion(-1, tamanioUnificado, true, -1, 0);
+                Particion nuevaParticion = new Particion(-1, tamanioUnificado, true, -1, 0,-1);
                 listaParticiones.set(i, nuevaParticion);  // Reemplazar la partición actual por la unificada
 
                 // Eliminar la partición siguiente
@@ -48,7 +49,7 @@ public class PoliticaWorstFit {
     }
 
 
-    public List<Particion> worstFit(List<Particion> listaParticiones, List<Proceso> listaProcesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
+    public Resultado worstFit(List<Particion> listaParticiones, List<Proceso> listaProcesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
 
         System.out.println("Estoy en la politica worstFit ");
 
@@ -108,7 +109,8 @@ public class PoliticaWorstFit {
                                 ProcesoActual.getTamanio(),
                                 false,
                                 tiempoFinalizacion,
-                                graficarParticion
+                                graficarParticion,
+                                ProcesoActual.getID()
                         );
 
                         particiones.add(particionEncontrada);
@@ -116,20 +118,21 @@ public class PoliticaWorstFit {
                         listaParticiones.remove(particionL);
                         listaProcesos.remove(ProcesoActual);
 
-                    } else {
+                    } else if (particionL.getTamanio() > ProcesoActual.getTamanio()){
 
-                        int graficarParticion = 0;
+                      int graficarParticion = 0;
                         int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
                         int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
 
-                        graficarParticion = calcularGraficoParticion(listaParticiones, particionL, graficarParticion);
+                     //   graficarParticion = calcularGraficoParticion(listaParticiones, particionL, graficarParticion);
 
                         Particion particionEncontrada = new Particion(
                                 tiempoInicio,
                                 ProcesoActual.getTamanio(),
                                 false,
                                 tiempoFinalizacion,
-                                graficarParticion
+                                graficarParticion,
+                                ProcesoActual.getID()
                         );
                         particiones.add(particionEncontrada);
                         listaParticiones.add(listaParticiones.indexOf(particionL) + 1, particionEncontrada);
@@ -139,7 +142,8 @@ public class PoliticaWorstFit {
                                 particionL.getTamanio() - ProcesoActual.getTamanio(),
                                 true,
                                 -1,
-                                0
+                                0,
+                                -1
                         );
                         listaParticiones.add(listaParticiones.indexOf(particionL) + 2, particionLibre);
                         listaParticiones.remove(particionL);
@@ -175,10 +179,24 @@ public class PoliticaWorstFit {
                 e.printStackTrace();
             }  // Pausa de 1 segundo
 
-            System.out.println("Fragmentación externa TOTAL: " + fragmentacionExterna);
+            Particion particionConMayorTiempo = listaParticiones != null && !listaParticiones.isEmpty()
+                    ? listaParticiones.stream()
+                    .max((p1, p2) -> Integer.compare(p1.getTiempoFinalizacion(), p2.getTiempoFinalizacion()))
+                    .orElse(null)
+                    : null;
+
+            int longitud = particionConMayorTiempo != null
+                    ? particionConMayorTiempo.getTiempoFinalizacion()
+                    : tiempoActual;
+
+
+            System.out.println("fragmentación externa TOTAL: " + fragmentacionExterna);
+            resultado.setlistaDeParticiones(particiones);
+            resultado.setLongitudTrabajo(longitud);
+
 
         }
-        return particiones;
+        return resultado;
     }
 
 }

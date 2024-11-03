@@ -10,7 +10,6 @@ public class Simulador {
     private List<Particion> listaParticiones;
     private List<Proceso> procesos;
     private int estrategiaActual;
-    private AsignacionMemoria asignador;
     private int tamanioMemoria;
     private int tiempoSeleccion;
     private int tiempoCargaPromedio;
@@ -28,17 +27,8 @@ public class Simulador {
         this.tiempoCargaPromedio = tiempoCargaPromedio;
         this.tiempoLiberacion = tiempoLiberacion;
         this.estrategiaActual = estrategia;
-
         // Inicializamos la lista de particiones antes de pasarla al asignador
         this.listaParticiones = new ArrayList<>();
-        this.asignador = new AsignacionMemoria();
-     /*
-        try {
-            this.registro = new Registro("eventos.txt", "estado_particiones.txt");
-        } catch (IOException e) {
-            System.out.println("Error al crear los archivos de registro: " + e.getMessage());
-        }
-        */
     }
     //Esto solo es usado para saber si el simulador esta funcionando correctamente
     public void imprimirDatosSimulador() {
@@ -67,24 +57,24 @@ public class Simulador {
             case 1 -> {
                 System.out.println("Simulador: First Fit");
                 PoliticaFirstFit ff = new PoliticaFirstFit();
-                particionesFinal = ff.firstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
+                resultado = ff.firstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
             }
             case 2 -> {
                 System.out.println("Simulador: Best Fit");
                 PoliticaBestFit bf = new PoliticaBestFit();
 
-                particionesFinal = bf.bestFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
+                resultado = bf.bestFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
             }
             case 3 -> {
                 System.out.println("Simulador: Next Fit");
                 PoliticaNextFit nf = new PoliticaNextFit();
                 //particionesFinal = asignador.nextFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
-                particionesFinal = nf.nextFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
+                resultado = nf.nextFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
             }
             case 4 -> {
                 System.out.println("Simulador: Worst Fit");
                 PoliticaWorstFit wf = new PoliticaWorstFit();
-                particionesFinal = wf.worstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
+                resultado= wf.worstFit(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion,resultado);
             }
         }
 
@@ -94,25 +84,28 @@ public class Simulador {
 
     
 public List<Particion> simular() {
-
-
         System.out.println("Entrando al simulador");
-
   //      imprimirDatosSimulador();
-
-        Particion particionInicial = new Particion(-1, tamanioMemoria, true, -1,0);
+        Particion particionInicial = new Particion(-1, tamanioMemoria, true, -1,0,-1);
         listaParticiones.add(particionInicial);
 
         Resultado resultado = new Resultado();
 
-
-
-      
         particionesFinal = asignarParticion(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
 
-      //  return resultado.getFragmentacion();
-          return particionesFinal;
+        // Imprimir resultados de los tiempos de retorno
+        for (Particion p : resultado.getlistaDeParticiones()) {
+            System.out.println("Tiempo retorno del trabajo " + p.getIdTarea() + ": " + p.getTiempoFinalizacion());
+        }
+        System.out.println("Tiempo de retorno de la tanda de trabajo: " + resultado.getLongitudTrabajo());
 
+        // Calcular y mostrar el tiempo medio de retorno
+        double total = resultado.getlistaDeParticiones().stream().mapToDouble(Particion::getTiempoFinalizacion).sum();
+        System.out.println("Tiempo medio de retorno: " + (total / resultado.getlistaDeParticiones().size()));
+
+
+
+    return particionesFinal;
     }
  
     
@@ -235,6 +228,8 @@ public List<Particion> simular() {
         }
         System.out.println();
     }
+
+
 
     public List<Proceso> getProcesos() {
         return procesos;
