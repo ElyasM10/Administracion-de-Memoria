@@ -35,15 +35,20 @@ public class PoliticaWorstFit {
         return listaParticiones;
     }
 
-    public int calcularGraficoParticion(List<Particion> listaParticiones, Particion particion, int graficarParticion) {
-        for (Particion part : listaParticiones) {
-            if (part.getEstado()) {
-                graficarParticion += part.getTamanio();
-            }
-            if (part == particion) {
-                // Rompe el bucle al llegar a la partición actual
+    public int calcularGraficoParticion(List<Particion> listaParticiones,Particion particion ,int graficarParticion) {
+        for (Particion p : listaParticiones) {
+            // Verifica si la partición está activa y es la última de la lista
+            if (p.getEstado() && p.equals(listaParticiones.get(listaParticiones.size() - 1))) {
                 break;
             }
+
+            // Si la partición actual es igual a la partición en cuestión, detener el bucle
+            if (p.equals(particion)) {
+                break;
+            }
+
+            // Sumar el tamaño de la partición al eje Y
+            graficarParticion += p.getTamanio();
         }
         return graficarParticion;
     }
@@ -124,7 +129,7 @@ public class PoliticaWorstFit {
                         int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
                         int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
 
-                     //   graficarParticion = calcularGraficoParticion(listaParticiones, particionL, graficarParticion);
+                        graficarParticion = calcularGraficoParticion(listaParticiones, particionL, graficarParticion);
 
                         Particion particionEncontrada = new Particion(
                                 tiempoInicio,
