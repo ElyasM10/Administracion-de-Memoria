@@ -77,9 +77,11 @@ public class ConsolaInterfaz {
             List<Particion> particionesAgraficar = new ArrayList<>();
 
             // Ejecutar la simulación
-            particionesAgraficar = simulador.simular();
+            Resultado res = simulador.simular();
 
-       //     mostrarResultados(particionesAgraficar);
+        DiagramaDeGantt dg = new DiagramaDeGantt(res.getlistaDeParticiones(),tamanioMemoria,res.getFragmentacion(),res.getLongitudTrabajo());
+        dg.imprimirDiagrama();
+
 
          //   int fragmentacionExterna = simulador.simular();
         //    System.out.println("Fragmentación externa: " + fragmentacionExterna);

@@ -52,7 +52,7 @@ public class Simulador {
     public Simulador() {
     }
 
-    public List<Particion> asignarParticion(List<Particion> listaParticiones, List<Proceso> procesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
+    public Resultado asignarParticion(List<Particion> listaParticiones, List<Proceso> procesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
         switch (estrategiaActual) {
             case 1 -> {
                 System.out.println("Simulador: First Fit");
@@ -78,12 +78,12 @@ public class Simulador {
             }
         }
 
-        return listaParticiones;
+        return resultado;
     }
    
 
     
-public List<Particion> simular() {
+public Resultado  simular() {
         System.out.println("Entrando al simulador");
   //      imprimirDatosSimulador();
         Particion particionInicial = new Particion(-1, tamanioMemoria, true, -1,0,-1);
@@ -91,7 +91,7 @@ public List<Particion> simular() {
 
         Resultado resultado = new Resultado();
 
-        particionesFinal = asignarParticion(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
+        resultado = asignarParticion(listaParticiones, procesos, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, resultado);
 
         // Imprimir resultados de los tiempos de retorno
         for (Particion p : resultado.getlistaDeParticiones()) {
@@ -105,7 +105,7 @@ public List<Particion> simular() {
 
 
 
-    return particionesFinal;
+    return resultado;
     }
  
     

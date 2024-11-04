@@ -32,16 +32,20 @@ public class PoliticaFirstFit {
         }
         return listaParticiones;
     }
-    //no lo uso todavia , va ser para los graficos
     public int calcularGraficoParticion(List<Particion> listaParticiones,Particion particion ,int graficarParticion) {
-        for (Particion part : listaParticiones) {
-            if (part.getEstado()) {
-                graficarParticion += part.getTamanio();
-            }
-            if (part == particion) {
-                // Rompe el bucle al llegar a la particion actual
+        for (Particion p : listaParticiones) {
+            // Verifica si la partición está activa y es la última de la lista
+            if (p.getEstado() && p.equals(listaParticiones.get(listaParticiones.size() - 1))) {
                 break;
             }
+
+            // Si la partición actual es igual a la partición en cuestión, detener el bucle
+            if (p.equals(particion)) {
+                break;
+            }
+
+            // Sumar el tamaño de la partición al eje Y
+            graficarParticion += p.getTamanio();
         }
         return graficarParticion;
     }
