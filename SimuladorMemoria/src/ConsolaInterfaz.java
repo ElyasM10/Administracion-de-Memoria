@@ -45,9 +45,9 @@ public class ConsolaInterfaz {
         scanner.nextLine(); // Limpiar el buffer del scanner
 
         //Asigno los procesos del archivo a una lista
-        List<Proceso> listaProcesos = cargarProcesosDesdeArchivo(nombreArchivo);
+        List<Tarea> listaTareas = cargarProcesosDesdeArchivo(nombreArchivo);
 
-        if (listaProcesos == null || listaProcesos.isEmpty()) {
+        if (listaTareas == null || listaTareas.isEmpty()) {
             System.out.println("No se pudieron cargar procesos del archivo.");
             return;
         }
@@ -59,38 +59,43 @@ public class ConsolaInterfaz {
         }
 
         // Ajustar estrategia a constantes
+        String estrategiaSeleccionada="";
         switch (estrategiaAsignacion) {
             case 1:
                 estrategiaAsignacion = FIRST_FIT;
+                estrategiaSeleccionada="First Fit";
                 break;
             case 2:
                 estrategiaAsignacion = BEST_FIT;
+                estrategiaSeleccionada="Best Fit";
                 break;
             case 3:
                 estrategiaAsignacion = NEXT_FIT;
+                estrategiaSeleccionada="Next Fit";
                 break;
             case 4:
                 estrategiaAsignacion = WORST_FIT;
+                estrategiaSeleccionada="Worst Fit";
                 break;
         }
             // Crear el simulador con la estrategia seleccionada
-            simulador = new Simulador(listaProcesos, tamanioMemoria, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, estrategiaAsignacion);
+            simulador = new Simulador(listaTareas, tamanioMemoria, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, estrategiaAsignacion);
 
             // Ejecutar la simulacion
             Resultado res = simulador.simular();
 
             //Creo el diagrama para mostrarlo en consola
 
-        String estrategia = String.valueOf(estrategiaAsignacion);
-        DiagramaDeGantt dg = new DiagramaDeGantt(res.getlistaDeParticiones(),tamanioMemoria,res.getFragmentacion(),res.getLongitudTrabajo(),estrategia);
-        dg.imprimirDiagrama();
 
+        DiagramaDeGantt dg = new DiagramaDeGantt(res.getlistaDeParticiones(),tamanioMemoria,res.getFragmentacion(),res.getLongitudTarea(),  estrategiaSeleccionada);
+        dg.imprimirDiagrama();
+        System.out.println("No pude ajustar correctamente el tiempo de inicio del eje X");
 
     }
 
 
-    private static List<Proceso> cargarProcesosDesdeArchivo(String nombreArchivo) {
-        List<Proceso> procesos = new ArrayList<>();
+    private static List<Tarea> cargarProcesosDesdeArchivo(String nombreArchivo) {
+        List<Tarea> tareas = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
@@ -110,8 +115,8 @@ public class ConsolaInterfaz {
                     int duracion = Integer.parseInt(datos[3].trim());
                     int instanteArribo = Integer.parseInt(datos[4].trim());
 
-                    Proceso proceso = new Proceso(id, nombre, memoriaRequerida, duracion, instanteArribo);
-                    procesos.add(proceso);
+                    Tarea tarea = new Tarea(id, nombre, memoriaRequerida, duracion, instanteArribo);
+                    tareas.add(tarea);
                 } catch (NumberFormatException e) {
                     System.out.println("Error de formato en la linea: " + linea + " - " + e.getMessage());
                 }
@@ -119,6 +124,6 @@ public class ConsolaInterfaz {
         } catch (IOException e) {
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
-        return procesos;
+        return tareas;
     }
 }

@@ -9,7 +9,6 @@ public class DiagramaDeGantt {
     private List<Particion> particiones;
     private int tamanioMemoria;
     private int fragmentacionExterna;
-    private String politica;
     private int tiempoRetorno;
     private String estrategiaSeleccionada;
 
@@ -33,9 +32,8 @@ public class DiagramaDeGantt {
     public void imprimirDiagrama() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nDIAGRAMA DE GANTT\n");
-        sb.append("Fragmentación Externa: ").append(fragmentacionExterna).append("\n");
-        sb.append("Política: ").append(politica).append("\n\n");
-        sb.append("Autor: Elias Maldonado");
+        sb.append("Autor: Elias Maldonado").append("\n");
+        sb.append("Politica: ").append(estrategiaSeleccionada).append("\n\n");
         // Imprimir el eje X (Tiempo) sin saltos
         sb.append("     "); // Espacio para la etiqueta del eje Y
         for (int j = 1; j <= tiempoRetorno; j++) {
@@ -57,7 +55,7 @@ public class DiagramaDeGantt {
                 Particion particionEnTiempo = obtenerParticionEnTiempo(j, i);
 
                 if (particionEnTiempo != null) {
-                    sb.append("T" + particionEnTiempo.getIdProceso());
+                    sb.append("T" + particionEnTiempo.getIdTarea());
                 } else {
                     sb.append("  -");
                 }

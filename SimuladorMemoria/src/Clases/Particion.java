@@ -7,31 +7,30 @@ public class Particion {
     private int tamanio;
     private int graficarParticion;
     private boolean estado;
-    private Proceso proceso;
     private static int ultimoId = 0;
-    private int idProceso;
+    private int idTarea;
 
 public static int generarId() {
     ultimoId++;
     return ultimoId;
 }
 
-    public Particion(int tiempoInicio, int tamanio, boolean estado, int tiempoFinalizacion,int graficarParticion,int idProceso) {
-        this.id = generarId();
+    public Particion(int tiempoInicio, int tamanio, boolean estado, int tiempoFinalizacion,int graficarParticion,int idTarea) {
+        this.id = generarId(); //Genero un id para la particion
         this.tiempoInicio = tiempoInicio;
         this.tamanio = tamanio;
         this.estado = estado; 
         this.tiempoFinalizacion = tiempoFinalizacion;
         this.graficarParticion = graficarParticion;
-        this.idProceso = idProceso;
+        this.idTarea = idTarea;
     }
 
-    public int getIdProceso() {
-        return idProceso;
+    public int getIdTarea() {
+        return idTarea;
     }
 
-    public void setIdProceso(int idProceso) {
-        this.idProceso = idProceso;
+    public void setIdTarea(int idProceso) {
+        this.idTarea = idProceso;
     }
 
     public void setGraficarParticion(int graficarParticion){
@@ -46,15 +45,6 @@ public static int generarId() {
     public void setId(int id){
         this.id = id;
     }
-
-    public void setProceso(Proceso proceso){
-        this.proceso = proceso;
-    }
-
-    public Proceso getProceso(){
-        return proceso;
-    }
-
 
     public int getId() {
         return id;
@@ -102,7 +92,7 @@ public static int generarId() {
                 ", tamanio=" + tamanio +
                 ", estado=" + estado +
                 ", tiempoFinalizacion="+tiempoFinalizacion+
-                ",idTarea="+ idProceso +
+                ",idTarea="+ idTarea +
                 '}';
     }
 }

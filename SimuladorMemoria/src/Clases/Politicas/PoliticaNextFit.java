@@ -18,11 +18,11 @@ public class PoliticaNextFit {
                 // Unificar las particiones
                 int tamanioUnificado = particionActual.getTamanio() + particionSiguiente.getTamanio();
 
-                // Crear una nueva partición unificada
+                // Creo una nueva particion unificada
                 Particion nuevaParticion = new Particion(-1, tamanioUnificado, true, -1,0,-1);
-                listaParticiones.set(i, nuevaParticion);  // Reemplazar la partición actual por la unificada
+                listaParticiones.set(i, nuevaParticion);  // Reemplazar la particion actual por la unificada
 
-                // Eliminar la partición siguiente
+                // Eliminar la particion siguiente
                 listaParticiones.remove(i + 1);
             }else{
                 i++;
@@ -33,24 +33,24 @@ public class PoliticaNextFit {
 
     public int calcularGraficoParticion(List<Particion> listaParticiones,Particion particion ,int graficarParticion) {
         for (Particion p : listaParticiones) {
-            // Verifica si la partición está activa y es la última de la lista
+            // Verifica si la particion esta activa y es la ultima de la lista
             if (p.getEstado() && p.equals(listaParticiones.get(listaParticiones.size() - 1))) {
                 break;
             }
 
-            // Si la partición actual es igual a la partición en cuestión, detener el bucle
+            // Si la particion actual es igual a la particion en cuestion, detener el bucle
             if (p.equals(particion)) {
                 break;
             }
 
-            // Sumar el tamaño de la partición al eje Y
+            // Sumar el tamanio de la partición al eje Y
             graficarParticion += p.getTamanio();
         }
         return graficarParticion;
     }
 
 
-    public Resultado nextFit(List<Particion> listaParticiones, List<Proceso> listaProcesos, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
+    public Resultado nextFit(List<Particion> listaParticiones, List<Tarea> listaTareas, int tiempoSeleccion, int tiempoCargaPromedio, int tiempoLiberacion, Resultado resultado) {
 
       System.out.println("Estoy en la politica nextFit ");
 
@@ -60,16 +60,16 @@ public class PoliticaNextFit {
         int fragmentacionExterna = 0;
         int i = 0;
 
-        while (!listaProcesos.isEmpty()) {
-            Proceso ProcesoActual = listaProcesos.get(index);
-            System.out.println("Proceso: " + ProcesoActual.getNombre() + " esperando particion");
+        while (!listaTareas.isEmpty()) {
+            Tarea tareaActual = listaTareas.get(index);
+            System.out.println("Tarea: " + tareaActual.getNombre() + " esperando particion");
             System.out.println("Tiempo actual: " + tiempoActual);
 
             for (Particion particion : listaParticiones) {
                 System.out.println("Particiones: [" + particion + "]");
             }
 
-            // Recorrer particiones y liberar si su tiempo de finalización es igual al tiempo actual
+            // Recorrer particiones y liberar si su tiempo de finalizacion es igual al tiempo actual
             for (Particion particion : listaParticiones) {
                 if (particion.getTiempoFinalizacion() == tiempoActual) {
                     particion.setEstado(true);
@@ -78,70 +78,59 @@ public class PoliticaNextFit {
 
             listaParticiones = unificarParticiones(listaParticiones);
 
-            boolean carga = true;
+            boolean preparado = true;
 
-            while (carga && i < listaParticiones.size()) {
+            while (preparado && i < listaParticiones.size()) {
                 Particion particion = listaParticiones.get(i);
-                if (particion.getEstado() && particion.getTamanio() >= ProcesoActual.getTamanio()) {
-                    carga = false;
+                if (particion.getEstado() && particion.getTamanio() >= tareaActual.getTamanio()) {
+                    preparado = false;
 
-                    if (particion.getTamanio() == ProcesoActual.getTamanio()) {
+                    if (particion.getTamanio() == tareaActual.getTamanio()) {
 
                         int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
-                        int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
+                        int tiempoFinalizacion = tiempoInicio + tareaActual.getDuracion() + tiempoLiberacion;
 
 
+                        //Calculo el tamanio de la particion para despues graficarla
                         int graficarParticion = 0;
-
-                  /*
-                        for (Particion part : listaParticiones) {
-                            if (part.getEstado()) {
-                                graficarParticion += part.getTamanio();
-                            }
-                            if (part == particion) {
-                                // Rompe el bucle al llegar a la partición actual
-                                break;
-                            }
-                        }
-                   */
                         graficarParticion = calcularGraficoParticion(listaParticiones,particion,graficarParticion);
 
                         Particion particionEncontrada = new Particion(
                                 tiempoInicio,
-                                ProcesoActual.getTamanio(),
+                                tareaActual.getTamanio(),
                                 false,
                                 tiempoFinalizacion,
                                 graficarParticion,
-                                ProcesoActual.getID()
+                                tareaActual.getID()
                         );
-                        System.out.println("El Proceso " + ProcesoActual.getNombre() + " encontró partición");
+                        System.out.println("La Tarea " + tareaActual.getNombre() + " encontro una particion");
                         particiones.add(particionEncontrada);
 
                         listaParticiones.add(listaParticiones.indexOf(particion), particionEncontrada);
                         listaParticiones.remove(particion);
 
-                        listaProcesos.remove(ProcesoActual);
-                    } else if (particion.getTamanio() > ProcesoActual.getTamanio()) {
+                        listaTareas.remove(tareaActual);
+                    } else if (particion.getTamanio() > tareaActual.getTamanio()) {
                         int tiempoInicio = tiempoCargaPromedio + tiempoSeleccion + tiempoActual;
-                        int tiempoFinalizacion = tiempoInicio + ProcesoActual.getDuracion() + tiempoLiberacion;
+                        int tiempoFinalizacion = tiempoInicio + tareaActual.getDuracion() + tiempoLiberacion;
 
                         int graficarParticion = 0;
                         graficarParticion = calcularGraficoParticion(listaParticiones,particion,graficarParticion);
 
                         Particion particionEncontrada = new Particion(
                                 tiempoInicio,
-                                ProcesoActual.getTamanio(),
+                                tareaActual.getTamanio(),
                                 false,
                                 tiempoFinalizacion,
                                 graficarParticion,
-                                ProcesoActual.getID()
+                                tareaActual.getID()
                         );
                         listaParticiones.add(listaParticiones.indexOf(particion) + 1, particionEncontrada);
                         particiones.add(particionEncontrada);
 
                         Particion particionLibre = new Particion(
                                 -1,
-                                particion.getTamanio() - ProcesoActual.getTamanio(),
+                                particion.getTamanio() - tareaActual.getTamanio(),
                                 true,
                                 -1,
                                 0,
@@ -150,15 +139,15 @@ public class PoliticaNextFit {
                         listaParticiones.add(listaParticiones.indexOf(particion) + 2, particionLibre);
 
                         listaParticiones.remove(particion);
-                        listaProcesos.remove(ProcesoActual);
+                        listaTareas.remove(tareaActual);
 
-                        System.out.println("El Proceso " + ProcesoActual.getNombre() + " encontró partición");
+                        System.out.println("La Tarea " + tareaActual.getNombre() + " encontro una particion");
                     }
                 }
                 i++;
             }
 
-            // Calcular fragmentación externa
+            // Calcular fragmentacion externa
             for (Particion particion : listaParticiones) {
                 if (particion.getEstado() ) {
                     fragmentacionExterna+= particion.getTamanio();
@@ -173,7 +162,7 @@ public class PoliticaNextFit {
                 i = 0;
             }
 
-            System.out.println("Longitud de la lista de Procesos: " + listaProcesos.size());
+            System.out.println("Longitud de la lista de Tareas: " + listaTareas.size());
             System.out.println("------------------------------");
 
 
@@ -183,7 +172,7 @@ public class PoliticaNextFit {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }  // Pausa de 1 segundo
+        }
 
         Particion particionConMayorTiempo = listaParticiones != null && !listaParticiones.isEmpty()
                 ? listaParticiones.stream()
@@ -198,7 +187,7 @@ public class PoliticaNextFit {
 
         System.out.println("fragmentación externa TOTAL: " + fragmentacionExterna);
         resultado.setlistaDeParticiones(particiones);
-        resultado.setLongitudTrabajo(longitud);
+        resultado.setLongitudTarea(longitud);
         return resultado;
     }
 

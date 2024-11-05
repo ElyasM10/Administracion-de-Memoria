@@ -1,15 +1,15 @@
 package Clases;
-public class Proceso {
+public class Tarea {
     //seria como la tanda
 
     private int id;
     private String nombre;
-    private int Tamanio; //Tamaño
+    private int Tamanio;
     private int instanteArribo;
     private int duracion;
 
 
-    public Proceso(int id,String nombre,int Tamanio,int duracion,int instanteArribo){
+    public Tarea(int id, String nombre, int Tamanio, int duracion, int instanteArribo){
         this.id = id;
         this.nombre = nombre;
         this.Tamanio = Tamanio;
@@ -64,7 +64,7 @@ public class Proceso {
     // toString
     @Override
     public String toString() {
-        return "Trabajo{" +
+        return "Tarea{" +
                 "id='"+id+
                 "nombre='" + nombre + '\'' +
                 ", instanteArribo=" + instanteArribo +
