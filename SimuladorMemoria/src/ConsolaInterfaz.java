@@ -14,6 +14,7 @@ public class ConsolaInterfaz {
     public static final int WORST_FIT = 4;
 
     public static void main(String[] args) {
+        //Cargo los datos para la simulacion y creo la consola
         ConsolaInterfaz consola = new ConsolaInterfaz();
         consola.cargarYSimular();
     }
@@ -24,25 +25,26 @@ public class ConsolaInterfaz {
         System.out.print("Nombre del archivo: ");
         String nombreArchivo = scanner.nextLine();
 
-        System.out.print("Tamaño de la memoria: ");
+        System.out.print("Tamanio de la memoria: ");
         int tamanioMemoria = Integer.parseInt(scanner.nextLine());
-        System.out.print("Tiempo de selección: ");
+        System.out.print("Tiempo de seleccion: ");
         int tiempoSeleccion = Integer.parseInt(scanner.nextLine());
         System.out.print("Tiempo de carga promedio: ");
         int tiempoCargaPromedio = Integer.parseInt(scanner.nextLine());
-        System.out.print("Tiempo de liberación: ");
+        System.out.print("Tiempo de liberacion: ");
         int tiempoLiberacion = Integer.parseInt(scanner.nextLine());
         
-        System.out.println("Política de asignación:");
+        System.out.println("Politica de asignacion:");
         System.out.println("1 - First Fit");
         System.out.println("2 - Best Fit");
         System.out.println("3 - Next Fit");
         System.out.println("4 - Worst Fit");
-        System.out.print("Selecciona una opción (1-4): ");
+        System.out.print("Selecciona una opcion (1-4): ");
         
         int estrategiaAsignacion = scanner.nextInt();
         scanner.nextLine(); // Limpiar el buffer del scanner
 
+        //Asigno los procesos del archivo a una lista
         List<Proceso> listaProcesos = cargarProcesosDesdeArchivo(nombreArchivo);
 
         if (listaProcesos == null || listaProcesos.isEmpty()) {
@@ -50,9 +52,9 @@ public class ConsolaInterfaz {
             return;
         }
 
-        // Validar y ajustar la estrategia de asignación
+        // Validar y ajustar la estrategia de asignacion
         if (estrategiaAsignacion < 1 || estrategiaAsignacion > 4) {
-            System.out.println("Política no reconocida. Se usará FIRST_FIT por defecto.");
+            System.out.println("Politica no reconocida. Se usara FIRST_FIT por defecto.");
             estrategiaAsignacion = FIRST_FIT; // Usar FIRST_FIT como predeterminado
         }
 
@@ -74,18 +76,16 @@ public class ConsolaInterfaz {
             // Crear el simulador con la estrategia seleccionada
             simulador = new Simulador(listaProcesos, tamanioMemoria, tiempoSeleccion, tiempoCargaPromedio, tiempoLiberacion, estrategiaAsignacion);
 
-            List<Particion> particionesAgraficar = new ArrayList<>();
-
-            // Ejecutar la simulación
+            // Ejecutar la simulacion
             Resultado res = simulador.simular();
 
-        DiagramaDeGantt dg = new DiagramaDeGantt(res.getlistaDeParticiones(),tamanioMemoria,res.getFragmentacion(),res.getLongitudTrabajo());
+            //Creo el diagrama para mostrarlo en consola
+
+        String estrategia = String.valueOf(estrategiaAsignacion);
+        DiagramaDeGantt dg = new DiagramaDeGantt(res.getlistaDeParticiones(),tamanioMemoria,res.getFragmentacion(),res.getLongitudTrabajo(),estrategia);
         dg.imprimirDiagrama();
 
 
-         //   int fragmentacionExterna = simulador.simular();
-        //    System.out.println("Fragmentación externa: " + fragmentacionExterna);
-        
     }
 
 
@@ -99,7 +99,7 @@ public class ConsolaInterfaz {
 
                 String[] datos = linea.split(",");
                 if (datos.length != 5) {
-                    System.out.println("Línea en el archivo no válida: " + linea);
+                    System.out.println("Linea en el archivo no válida: " + linea);
                     continue;
                 }
 
@@ -113,7 +113,7 @@ public class ConsolaInterfaz {
                     Proceso proceso = new Proceso(id, nombre, memoriaRequerida, duracion, instanteArribo);
                     procesos.add(proceso);
                 } catch (NumberFormatException e) {
-                    System.out.println("Error de formato en la línea: " + linea + " - " + e.getMessage());
+                    System.out.println("Error de formato en la linea: " + linea + " - " + e.getMessage());
                 }
             }
         } catch (IOException e) {

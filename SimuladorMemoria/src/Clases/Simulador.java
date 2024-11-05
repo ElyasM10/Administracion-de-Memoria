@@ -95,7 +95,7 @@ public Resultado  simular() {
 
         // Imprimir resultados de los tiempos de retorno
         for (Particion p : resultado.getlistaDeParticiones()) {
-            System.out.println("Tiempo retorno del trabajo " + p.getIdTarea() + ": " + p.getTiempoFinalizacion());
+            System.out.println("Tiempo retorno del trabajo " + p.getIdProceso() + ": " + p.getTiempoFinalizacion());
         }
         System.out.println("Tiempo de retorno de la tanda de trabajo: " + resultado.getLongitudTrabajo());
 

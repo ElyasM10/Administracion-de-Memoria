@@ -1,10 +1,9 @@
 package Clases;
 
 
-import java.awt.*;
+
 import java.util.List;
-import java.util.Random;
-import javax.swing.*;
+
 
 public class DiagramaDeGantt {
     private List<Particion> particiones;
@@ -12,13 +11,14 @@ public class DiagramaDeGantt {
     private int fragmentacionExterna;
     private String politica;
     private int tiempoRetorno;
+    private String estrategiaSeleccionada;
 
-
-    public DiagramaDeGantt(List<Particion> particiones, int tamanioMemoria, int fragmentacionExterna, int tiemporRetorno) {
+    public DiagramaDeGantt(List<Particion> particiones, int tamanioMemoria, int fragmentacionExterna, int tiemporRetorno,String estrategia) {
         this.particiones = particiones;
         this.tamanioMemoria = tamanioMemoria;
         this.fragmentacionExterna = fragmentacionExterna;
         this.tiempoRetorno = tiemporRetorno;
+        this.estrategiaSeleccionada = estrategia;
     }
 
     public int getTamanioMemoria() {
@@ -29,23 +29,13 @@ public class DiagramaDeGantt {
         this.tamanioMemoria = tamanioMemoria;
     }
 
-
-    // Metodo para actualizar la lista de Particions y redibujar el panel
-    public void setDatos(List<Particion> particiones, int tamanioMemoria, int fragmentacion, String politica, int TRT) {
-        this.particiones = particiones;
-        this.tamanioMemoria = tamanioMemoria;
-        this.fragmentacionExterna = fragmentacion;
-        this.politica = politica;
-        this.tiempoRetorno = TRT;
-
-    }
-
+   //Aca muestro el diagrama
     public void imprimirDiagrama() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nDIAGRAMA DE GANTT\n");
         sb.append("Fragmentación Externa: ").append(fragmentacionExterna).append("\n");
         sb.append("Política: ").append(politica).append("\n\n");
-
+        sb.append("Autor: Elias Maldonado");
         // Imprimir el eje X (Tiempo) sin saltos
         sb.append("     "); // Espacio para la etiqueta del eje Y
         for (int j = 1; j <= tiempoRetorno; j++) {
@@ -53,21 +43,21 @@ public class DiagramaDeGantt {
         }
         sb.append("\n");
 
-        // Línea de referencia para el eje X
+        // Linea de referencia para el eje X
         sb.append("     +");
         sb.append("-".repeat(tiempoRetorno * 3));
         sb.append("\n");
 
-        // Imprimir el eje Y (Memoria) de 0 a tamaño máximo en orden ascendente
+        // Imprimir el eje Y (Memoria) de 0 a tamanio maximo en orden ascendente
         for (int i = tamanioMemoria; i >= 0; i -= 10) {
             sb.append(String.format("%4dk |", i)); // Etiqueta del eje Y
 
-            // Relleno de la línea con particiones o espacios vacíos
+            // Relleno de la linea con particiones o espacios vacios
             for (int j = 1; j <= tiempoRetorno; j++) {
                 Particion particionEnTiempo = obtenerParticionEnTiempo(j, i);
 
                 if (particionEnTiempo != null) {
-                    sb.append("T" + particionEnTiempo.getIdTarea());
+                    sb.append("T" + particionEnTiempo.getIdProceso());
                 } else {
                     sb.append("  -");
                 }
