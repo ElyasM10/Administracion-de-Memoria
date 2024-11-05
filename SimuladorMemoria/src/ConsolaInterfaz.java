@@ -52,14 +52,16 @@ public class ConsolaInterfaz {
             return;
         }
 
+        String estrategiaSeleccionada="";
         // Validar y ajustar la estrategia de asignacion
         if (estrategiaAsignacion < 1 || estrategiaAsignacion > 4) {
             System.out.println("Politica no reconocida. Se usara FIRST_FIT por defecto.");
             estrategiaAsignacion = FIRST_FIT; // Usar FIRST_FIT como predeterminado
+            estrategiaSeleccionada="First Fit";
         }
 
-        // Ajustar estrategia a constantes
-        String estrategiaSeleccionada="";
+        // Selecion de estrategia 
+     
         switch (estrategiaAsignacion) {
             case 1:
                 estrategiaAsignacion = FIRST_FIT;
